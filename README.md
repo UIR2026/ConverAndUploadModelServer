@@ -154,12 +154,6 @@ uvicorn app.main:app --reload
 
 Точка входа приложения: [app/main.py](/Users/tanexc/PyCharmMiscProject/convert-and-update-model-server/app/main.py).
 
-## Поведение stub-конвертера
-
-Stub-конвертер уже подключен к `POST /models`, но реальную конвертацию пока не делает. В текущей версии он копирует загруженный `.pt` файл в хранилище с расширением `.ort`, чтобы можно было проверить сценарий загрузки и скачивания end-to-end.
-
-Точка расширения находится в [app/infrastructure/ModelConverterImpl.py](/Users/tanexc/PyCharmMiscProject/convert-and-update-model-server/app/infrastructure/ModelConverterImpl.py).
-
 ## Примеры запросов
 
 Загрузка модели:
@@ -231,26 +225,6 @@ rm /tmp/model-update-server.env
 sudo cp deploy/systemd/model-update-server.service /etc/systemd/system/model-update-server.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now model-update-server
-```
-
-## CI
-
-В CI храните `API_KEYS` как secret/protected variable и передавайте её в окружение сборки или деплоя.
-Не генерируйте новые ключи при каждом деплое, если старые клиенты должны продолжать работать.
-
-Пример для GitHub Actions:
-
-```yaml
-env:
-  API_KEYS: ${{ secrets.API_KEYS }}
-```
-
-Пример для GitLab CI:
-
-```yaml
-deploy:
-  script:
-    - docker run --env API_KEYS="$API_KEYS" model-update-server
 ```
 
 ## Структура данных
